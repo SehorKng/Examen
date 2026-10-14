@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Timeline du Web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.eras{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.car{position:relative}
+.track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 0 20px;position:relative;scrollbar-width:none;outline-offset:4px}
+.track::-webkit-scrollbar{display:none}
+.step{flex:0 0 300px;height:460px;display:flex;flex-direction:column;scroll-snap-align:start;padding:0;overflow:hidden;border-top:6px solid var(--c);transition:transform .25s}
+.step:hover{transform:translateY(-6px)}
+.pic{position:relative;flex:none;width:100%;aspect-ratio:16/10;display:grid;place-items:center;font-size:4rem;background:linear-gradient(135deg,var(--c1),var(--c2));overflow:hidden}
+.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sbody{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.year{font:800 2rem "Bricolage Grotesque",sans-serif;line-height:1}
+.sbody h3{margin:6px 0 4px;font-size:1.1rem}
+.sbody p{margin:0;font-size:.96rem;color:var(--mute)}
+.arrow{position:absolute;top:76px;z-index:5;width:54px;height:54px;border-radius:50%;border:0;background:var(--accent);color:var(--on);font-size:1.6rem;font-weight:800;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,opacity .2s}
+.arrow:hover{transform:scale(1.12)}
+.arrow:disabled{opacity:.25;cursor:default;transform:none}
+.arrow.prev{left:-14px}.arrow.next{right:-14px}
+@media(max-width:700px){.track{margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px}.step{flex-basis:min(300px,80vw);height:auto;min-height:430px}.jump button{padding:8px 12px}.arrow{display:none}}
+.meter{display:flex;align-items:center;gap:14px;margin:6px 0 16px}
+.bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--pink));transition:width .3s}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:4px 12px;font:600 .9rem Figtree,sans-serif;cursor:pointer}
+.jump button:hover{border-color:var(--c)}
+.jump button.on{background:var(--c);border-color:var(--c);color:var(--on)}
+@media(prefers-reduced-motion:reduce){.step,.arrow,.bar i{transition:none}}
+</style>
+</head>
+<body data-page="timeline">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">⏳ Timeline</span>
+<h1>Les grandes dates <span class="grad">du Web</span></h1>
+<p class="lead">De l'idée d'un chercheur en 1989 à l'intelligence artificielle d'aujourd'hui : 14 étapes, avec à chaque fois ce que ça a changé.</p>
+</div>
+
+<section class="container sec" style="padding-top:8px">
+<div class="eras" id="eras" aria-label="Légende des époques"></div>
+<div class="car">
+<button class="arrow prev" id="prev" type="button" aria-label="Étape précédente">←</button>
+<div class="track" id="track" tabindex="0" role="region" aria-label="Frise chronologique : utilise les flèches du clavier ou les boutons pour avancer"></div>
+<button class="arrow next" id="next" type="button" aria-label="Étape suivante">→</button>
+</div>
+<div class="meter"><strong id="count" aria-live="polite">1 / 14</strong><div class="bar"><i id="fill"></i></div></div>
+<div class="jump" id="jump" aria-label="Aller directement à une date"></div>
+</section>
+
+<section class="container sec"><div class="brief reveal"><div class="ic">💡</div><p><b>À retenir.</b> Le Web a trois grandes périodes : la <b>naissance</b> (1989–1994, des pages et des liens), l'<b>explosion</b> (1995–2005, commerce, recherche, partage) puis le <b>Web partout</b> (mobile, applications, IA).</p></div></section>
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+/* Chaque époque : couleur de bordure, dégradé de l'image, nom */
+const ERAS=[
+{n:"Naissance (1989–1994)",c:"var(--violet)",c1:"#7b4dff",c2:"#4d9dff"},
+{n:"Explosion (1995–2005)",c:"var(--pink)",c1:"#ff4d8d",c2:"#ff9f1c"},
+{n:"Mobile et applications (2007–2014)",c:"var(--orange)",c1:"#ff9f1c",c2:"#ffd23f"},
+{n:"Intelligence artificielle (2022)",c:"var(--cyan)",c1:"#27d3ff",c2:"#2ee6a6"}];
+/* [année, emoji, type, titre, phrase "ce que ça a changé", époque] */
+const TL=[
+["1989","🧪","Technologie","Une idée au CERN","Tim Berners-Lee propose un système de pages reliées entre elles : l'idée du Web est née.",0],
+["1991","🌐","Service","Le premier site","Le premier site est mis en ligne : le Web existe concrètement.",0],
+["1993","🖼️","Technologie","Le navigateur Mosaic","Texte et images s'affichent ensemble : le Web devient grand public.",0],
+["1994","📐","Standard","Le W3C","Une organisation est fondée pour écrire des règles communes à tous les sites.",0],
+["1995","⚡","Technologie","JavaScript","Les pages deviennent interactives : elles réagissent aux clics.",1],
+["1995","🛒","Service","Amazon et eBay","Acheter en ligne devient possible : le commerce s'installe sur le Web.",1],
+["1998","🔎","Service","Google","Un moteur de recherche classe les pages par pertinence : on trouve enfin ce qu'on cherche.",1],
+["2001","📚","Service","Wikipédia","N'importe qui peut écrire une encyclopédie en ligne, ensemble.",1],
+["2004","👥","Service","Facebook et le Web 2.0","Les internautes ne font plus que lire : ils publient eux-mêmes.",1],
+["2005","▶️","Service","YouTube","La vidéo en ligne devient accessible à tout le monde.",1],
+["2007","📱","Technologie","L'iPhone","Le Web mobile : on l'emporte dans la poche.",2],
+["2008","🚀","Technologie","Google Chrome","Un navigateur rapide : les sites deviennent de vraies applications.",2],
+["2014","✅","Standard","HTML5","Audio, vidéo et dessin fonctionnent sans plugin, sur tous les navigateurs.",2],
+["2022","🤖","Service","ChatGPT et l'IA","L'IA générative se popularise et change la façon de chercher et d'écrire.",3]];
+const TC={"Technologie":"var(--blue)","Service":"var(--green)","Standard":"var(--yellow)"};
+
+$("#eras").innerHTML=ERAS.map(e=>`<span class="chip" style="--c:${e.c}">${e.n}</span>`).join("");
+/* Images : mets USE_IMAGES à true et dépose images/timeline/01.jpg, 02.jpg... pour remplacer les emojis */
+const USE_IMAGES=false;
+$("#track").innerHTML=TL.map((t,i)=>{const e=ERAS[t[5]],n=String(i+1).padStart(2,"0");
+return `<article class="card step" style="--c:${e.c};--c1:${e.c1};--c2:${e.c2}"><div class="pic"><span aria-hidden="true">${t[1]}</span>${USE_IMAGES?`<img src="images/timeline/${n}.jpg" alt="Illustration : ${esc(t[3])}" loading="lazy" onerror="this.remove()">`:""}</div><div class="sbody"><span class="chip" style="--c:${TC[t[2]]};align-self:flex-start">${t[2]}</span><div class="year" style="margin-top:8px">${t[0]}</div><h3>${t[3]}</h3><p>${t[4]}</p></div></article>`}).join("");
+$("#jump").innerHTML=TL.map((t,i)=>`<button type="button" data-i="${i}" style="--c:${ERAS[t[5]].c}">${t[0]}</button>`).join("");
+
+const tr=$("#track"),cards=$$(".step",tr),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stepW=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:300;
+const go=l=>tr.scrollTo({left:l,behavior:reduce?"auto":"smooth"});
+$("#prev").onclick=()=>go(tr.scrollLeft-stepW());
+$("#next").onclick=()=>go(tr.scrollLeft+stepW());
+$("#jump").onclick=e=>{const b=e.target.closest("button");if(b)go(cards[b.dataset.i].offsetLeft)};
+function upd(){const i=Math.min(cards.length-1,Math.round(tr.scrollLeft/stepW()));
+$("#count").textContent=`${i+1} / ${cards.length}`;$("#fill").style.width=((i+1)/cards.length*100)+"%";
+$("#prev").disabled=tr.scrollLeft<4;$("#next").disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4;
+$$("#jump button").forEach((b,j)=>b.classList.toggle("on",j===i))}
+tr.addEventListener("scroll",()=>requestAnimationFrame(upd),{passive:true});
+addEventListener("resize",upd);upd();
+</script>
+</body>
+</html>

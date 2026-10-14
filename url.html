@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les URL</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+:root{--k1:var(--blue);--k2:var(--green);--k3:var(--yellow);--k4:var(--pink);--k5:var(--violet)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tabs button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:6px 14px;font:600 .92rem Figtree,sans-serif;cursor:pointer}
+.tabs button.on{background:var(--orange);border-color:var(--orange);color:var(--on)}
+.tiles{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:clamp(.9rem,2.6vw,1.45rem);overflow-wrap:anywhere}
+.sep{padding-bottom:10px;color:var(--mute)}
+.tile{position:relative;border:0;border-radius:14px 14px 4px 4px;padding:22px 14px 10px;color:var(--on);background:var(--k);cursor:pointer;font:inherit;transition:transform .2s;text-align:left;overflow-wrap:anywhere}
+.tile small{position:absolute;top:5px;left:12px;font:700 .62rem Figtree,sans-serif;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
+.tile:hover{transform:translateY(-5px)}
+.tile.on{outline:4px solid var(--ink);outline-offset:3px;transform:translateY(-5px)}
+.tile.none{background:transparent;border:2px dashed var(--line);color:var(--mute);cursor:pointer}
+.panel{margin-top:20px;display:grid;gap:16px;grid-template-columns:auto 1fr;align-items:start;padding:18px;border-radius:var(--r);background:color-mix(in srgb,var(--k) 18%,var(--card));border:2px solid var(--k)}
+.panel .em{font-size:3rem;line-height:1}
+.panel h3{margin-bottom:2px}
+.analogy{display:inline-block;background:var(--k);color:var(--on);font-weight:700;border-radius:99px;padding:2px 12px;font-size:.9rem;margin-bottom:8px}
+.panel code{background:color-mix(in srgb,var(--ink) 12%,transparent);padding:1px 6px;border-radius:6px}
+.form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:20px}
+.form label{display:block;font-weight:700;font-size:.85rem;margin-bottom:4px}
+.form input,.form select{width:100%;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.sentence{margin-top:18px;font-size:1.05rem}
+.sentence b{padding:1px 8px;border-radius:8px;color:var(--on);background:var(--k)}
+.codes4{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.code{border-top:8px solid var(--c)}
+.code .n{font:800 3rem "Bricolage Grotesque",sans-serif;line-height:1}
+.code .say{font-style:italic;color:var(--mute)}
+.redir{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:20px 0}
+.redir .node{padding:12px 16px;border-radius:14px;background:var(--card);border:2px solid var(--line);text-align:center;font-weight:600}
+.redir .mid{border-color:var(--c);background:color-mix(in srgb,var(--c) 22%,var(--card))}
+.redir .ar{font-size:1.6rem;color:var(--mute)}
+@media(max-width:600px){.panel{grid-template-columns:1fr}.tabs button{padding:9px 14px;min-height:42px}.redir .ar{transform:rotate(90deg)}.redir{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.tile{transition:none}}
+</style>
+</head>
+<body data-page="url">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">🔗 URL</span>
+<h1>Une URL, c'est <span class="grad">une adresse</span></h1>
+<p class="lead">Comme une adresse postale te mène chez quelqu'un, une URL mène ton navigateur vers une page. Chaque morceau a un rôle précis : on les découvre un par un.</p>
+</div>
+
+<section class="container sec reveal">
+<h2>🧩 Le décodeur d'adresse</h2>
+<p class="lead" style="margin-bottom:18px">Choisis une adresse, puis clique sur chaque morceau coloré pour comprendre à quoi il sert.</p>
+<div class="card">
+<div class="tabs" id="ex" role="group" aria-label="Choisir une adresse"></div>
+<div class="tiles" id="tiles"></div>
+<div class="panel" id="panel" style="--k:var(--k1)" aria-live="polite"></div>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>🛠️ Construis ta propre URL</h2>
+<p class="lead" style="margin-bottom:18px">Change les champs : l'adresse se construit en direct, avec une phrase qui explique ce que fera le navigateur.</p>
+<div class="card">
+<div class="form">
+<div><label for="f1">Schéma</label><select id="f1"><option>https</option><option>http</option></select></div>
+<div><label for="f2">Domaine</label><input id="f2" value="monsite.fr" autocomplete="off"></div>
+<div><label for="f3">Chemin</label><input id="f3" value="/blog/article" autocomplete="off"></div>
+<div><label for="f4">Paramètre (nom)</label><input id="f4" value="page" autocomplete="off"></div>
+<div><label for="f5">Paramètre (valeur)</label><input id="f5" value="2" autocomplete="off"></div>
+<div><label for="f6">Ancre</label><input id="f6" value="commentaires" autocomplete="off"></div>
+</div>
+<div class="tiles" id="btiles" aria-live="polite"></div>
+<p class="sentence" id="sent"></p>
+</div>
+</section>
+
+<section class="container sec reveal" id="codes">
+<h2>🚦 Les réponses du serveur</h2>
+<p class="lead" style="margin-bottom:18px">Quand ton navigateur demande une page, le serveur répond toujours par un code à trois chiffres. Imagine un restaurant : tu commandes, et la cuisine te répond.</p>
+<div class="codes4" id="codeCards"></div>
+<div class="brief" style="margin-top:20px"><div class="ic">💡</div><p><b>Astuce.</b> Le premier chiffre suffit pour comprendre : <b>2</b> = tout va bien, <b>3</b> = va voir ailleurs, <b>4</b> = erreur de ta part, <b>5</b> = erreur du serveur.</p></div>
+</section>
+
+<section class="container sec reveal">
+<h2>↪️ 301 ou 302 : deux façons de déménager</h2>
+<p class="lead">Une redirection renvoie le visiteur d'une adresse à une autre. La différence : est-ce pour toujours, ou juste pour un moment ?</p>
+<div class="card">
+<div class="tabs" id="rd" role="group" aria-label="Type de redirection"><button class="on" data-r="301">301 · définitive</button><button data-r="302">302 · temporaire</button></div>
+<div class="redir" id="redir" aria-live="polite"></div>
+<p id="rnote" style="text-align:center;margin:0"></p>
+</div>
+</section>
+
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+/* ---------- Décodeur ---------- */
+const EX=[
+["Wikipédia","https://fr.wikipedia.org/w/index.php?title=World_Wide_Web&action=history"],
+["Recherche Google","https://www.google.com/search?q=apprendre+html&hl=fr"],
+["Exemple complet (fictif)","https://exemple.fr:8080/blog/article?page=2&tri=date#commentaires"]];
+const PARTS=[
+{k:"var(--k1)",em:"🚚",lab:"Schéma",name:"Le schéma (protocole)",an:"Le moyen de transport",txt:"Il dit comment le navigateur et le serveur se parlent. <code>https</code> = échanges chiffrés (le colis voyage dans un camion blindé). <code>http</code> = échanges non chiffrés : à éviter."},
+{k:"var(--k2)",em:"🏙️",lab:"Domaine",name:"Le domaine (nom d'hôte)",an:"La ville",txt:"Il désigne le serveur à contacter. Il se lit de droite à gauche : l'extension, puis le nom, puis un éventuel sous-domaine."},
+{k:"var(--k3)",em:"🛣️",lab:"Chemin",name:"Le chemin",an:"La rue et le numéro",txt:"Il indique quelle page ou quel fichier demander sur ce serveur, comme les dossiers d'un ordinateur. Un simple <code>/</code> désigne la page d'accueil."},
+{k:"var(--k4)",em:"📝",lab:"Paramètres",name:"Les paramètres",an:"Les consignes au livreur",txt:"Ils commencent par <code>?</code>. Chaque consigne s'écrit <code>nom=valeur</code> et les consignes sont séparées par <code>&amp;</code>. Le serveur s'en sert pour adapter sa réponse (recherche, tri, numéro de page…)."},
+{k:"var(--k5)",em:"🪜",lab:"Ancre",name:"L'ancre (fragment)",an:"L'étage",txt:"Elle commence par <code>#</code> et fait aller à un endroit précis de la page. Elle reste dans ton navigateur : elle n'est pas envoyée au serveur."}];
+let sel=0,U=null;
+$("#ex").innerHTML=EX.map((e,i)=>`<button type="button" data-i="${i}" class="${i?"":"on"}">${e[0]}</button>`).join("");
+function vals(u){return [u.protocol.slice(0,-1),u.host,u.pathname==="/"&&!u.href.replace(u.origin,"").startsWith("/")?"":u.pathname,u.search,u.hash]}
+function tilesHTML(v,id){const out=[];
+v.forEach((s,i)=>{if(i===1)out.push('<span class="sep">://</span>');
+out.push(s?`<button type="button" class="tile${id==="tiles"&&i===sel?" on":""}" style="--k:${PARTS[i].k}" data-i="${i}" aria-label="${PARTS[i].lab} : ${esc(s)}"><small>${PARTS[i].lab}</small>${esc(s)}</button>`:`<button type="button" class="tile none${id==="tiles"&&i===sel?" on":""}" data-i="${i}" aria-label="${PARTS[i].lab} : absent"><small>${PARTS[i].lab}</small>∅ aucun</button>`)});
+return out.join("")}
+function extra(i,v){
+if(i===1&&v[1]){const h=v[1].split(":")[0].split("."),port=v[1].split(":")[1];let t="";
+if(h.length>=2){t+=`<br>Ici : extension <code>.${esc(h[h.length-1])}</code>, nom <code>${esc(h[h.length-2])}</code>`+(h.length>2?`, sous-domaine <code>${esc(h.slice(0,-2).join("."))}</code>.`:", pas de sous-domaine.")}
+if(port)t+=`<br>Le <code>:${esc(port)}</code> est le <b>port</b> : la porte d'entrée du serveur. S'il n'est pas écrit, le navigateur utilise la porte habituelle.`;return t}
+if(i===3&&v[3]){const p=[...new URLSearchParams(v[3])];return "<br>Ici : "+p.map(([a,b])=>`<code>${esc(a)}</code> vaut <code>${esc(b)}</code>`).join(" ; ")+"."}
+if(i===0&&v[0])return v[0]==="https"?"<br>Ici : <b>https</b>, c'est bien.":"<br>Ici : <b>http</b>, sans chiffrement.";
+return ""}
+function render(){const v=vals(U),p=PARTS[sel];
+$("#tiles").innerHTML=tilesHTML(v,"tiles");
+const none=!v[sel];
+$("#panel").style.setProperty("--k",p.k);
+$("#panel").innerHTML=`<div class="em">${p.em}</div><div><span class="analogy">${p.an}</span><h3>${p.name}</h3><p style="margin:0">${none?"Cette adresse n'en contient pas, car cette partie est facultative. Essaie l'exemple complet !":p.txt+extra(sel,v)}</p></div>`}
+function pick(i){U=new URL(EX[i][1]);sel=0;$$("#ex button").forEach((b,j)=>b.classList.toggle("on",j===i));render()}
+$("#ex").onclick=e=>{const b=e.target.closest("button");if(b)pick(+b.dataset.i)};
+$("#tiles").onclick=e=>{const b=e.target.closest(".tile");if(b){sel=+b.dataset.i;render()}};
+pick(0);
+
+/* ---------- Constructeur ---------- */
+function build(){
+const sc=$("#f1").value,dm=$("#f2").value.trim(),pa=$("#f3").value.trim(),pn=$("#f4").value.trim(),pv=$("#f5").value.trim(),an=$("#f6").value.trim();
+const path=pa?(pa.startsWith("/")?pa:"/"+pa):"",q=pn?"?"+encodeURIComponent(pn)+(pv?"="+encodeURIComponent(pv):""):"",h=an?"#"+an.replace(/\s+/g,"-"):"";
+$("#btiles").innerHTML=tilesHTML([sc,dm,path,q,h],"btiles").replace(/<button/g,'<button tabindex="-1"');
+let s=`Le navigateur utilise <b style="--k:var(--k1)">${esc(sc)}</b>`+(sc==="http"?" (sans chiffrement : prudence)":" (échanges chiffrés)");
+s+=dm?` pour se rendre sur <b style="--k:var(--k2)">${esc(dm)}</b>`:" pour se rendre… nulle part : il manque un domaine !";
+s+=path?`, demande la page <b style="--k:var(--k3)">${esc(path)}</b>`:", demande la page d'accueil";
+if(q)s+=`, avec la consigne <b style="--k:var(--k4)">${esc(pn)}${pv?" = "+esc(pv):""}</b>`;
+if(h)s+=`, puis saute à l'endroit <b style="--k:var(--k5)">${esc(h)}</b>`;
+$("#sent").innerHTML=s+"."}
+["f1","f2","f3","f4","f5","f6"].forEach(i=>$("#"+i).addEventListener("input",build));build();
+
+/* ---------- Codes HTTP ---------- */
+const CODES=[
+["200","OK","var(--green)","« Voici votre plat ! »","La page existe et le serveur l'a envoyée."],
+["301","Moved Permanently","var(--blue)","« Le restaurant a déménagé pour de bon. »","La page a changé d'adresse définitivement."],
+["302","Found","var(--cyan)","« Fermé pour travaux, mangez à côté ce soir. »","Redirection temporaire : l'ancienne adresse reste la bonne."],
+["404","Not Found","var(--orange)","« Ce plat n'est pas à la carte. »","Le serveur fonctionne, mais cette adresse n'existe pas (ou plus)."],
+["500","Internal Server Error","var(--red)","« Un incendie dans la cuisine ! »","Le serveur a un problème : la faute vient du site, pas de toi."]];
+$("#codeCards").innerHTML=CODES.map(c=>`<div class="card code" style="--c:${c[2]}"><div class="n">${c[0]}</div><h3>${c[1]}</h3><p class="say">${c[3]}</p><p style="margin:0">${c[4]}</p></div>`).join("");
+
+/* ---------- Redirections ---------- */
+const RD={"301":["var(--blue)","301 Moved Permanently","Définitif : le navigateur et Google retiennent la nouvelle adresse et ne repassent plus par l'ancienne."],"302":["var(--cyan)","302 Found","Temporaire : l'ancienne adresse reste la bonne. La prochaine fois, le navigateur repassera d'abord par elle."]};
+function rd(k){const r=RD[k];$("#redir").innerHTML=`<div class="node">🧑 Toi<br><small>demandes ancien-site.fr</small></div><span class="ar">➜</span><div class="node mid" style="--c:${r[0]}">${r[1]}<br><small>« va voir nouveau-site.fr »</small></div><span class="ar">➜</span><div class="node">🌐 nouveau-site.fr<br><small>200 OK ✅</small></div>`;$("#rnote").textContent=r[2];$$("#rd button").forEach(b=>b.classList.toggle("on",b.dataset.r===k))}
+$("#rd").onclick=e=>{const b=e.target.closest("button");if(b)rd(b.dataset.r)};rd("301");
+
+</script>
+</body>
+</html>

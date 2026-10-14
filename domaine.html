@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les noms de domaine</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.anat{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;font:800 clamp(1.3rem,5vw,2.6rem) ui-monospace,Menlo,monospace;margin:10px 0 18px}
+.anat .p{padding:18px 16px 8px;border-radius:14px 14px 4px 4px;background:var(--k);color:var(--on);position:relative}
+.anat .p small{position:absolute;top:4px;left:10px;font:700 .6rem Figtree,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.anat .d{color:var(--mute);padding-bottom:6px}
+.ip{display:grid;gap:14px;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center}
+.ip .arr{font-size:1.8rem;color:var(--mute)}
+.ip code{font-size:1.1rem}
+@media(max-width:700px){.ip{grid-template-columns:1fr}.ip .arr{transform:rotate(90deg)}}
+.chain{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.chain .card{text-align:center;position:relative}
+.chain .em{font-size:2.6rem}
+.chain .card::after{content:"➜";position:absolute;right:-15px;top:42%;color:var(--mute);font-size:1.3rem;z-index:1}
+.chain .card:last-child::after{display:none}
+@media(max-width:700px){.chain .card::after{display:none}}
+.steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));counter-reset:n}
+.steps .card{counter-increment:n}
+.steps .card::before{content:counter(n);display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--accent);color:var(--on);font:800 1.3rem "Bricolage Grotesque",sans-serif;margin-bottom:10px}
+.dns{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:d}
+.dns li{display:flex;gap:14px;align-items:center;padding:12px 16px;border-radius:14px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 14%,var(--card));counter-increment:d}
+.dns li::before{content:counter(d);flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--c);color:var(--on);font:800 1rem "Bricolage Grotesque",sans-serif}
+.dns .em{font-size:2rem}
+.life{display:flex;flex-wrap:wrap;gap:0;margin:10px 0 18px}
+.life button{flex:1 1 150px;border:0;padding:16px 18px 16px 26px;color:var(--on);font:600 .95rem Figtree,sans-serif;background:var(--c);cursor:pointer;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%,18px 50%);text-align:center;transition:filter .2s}
+.life button:hover{filter:brightness(1.12)}
+.life button.on{outline:none;box-shadow:inset 0 -6px 0 rgba(0,0,0,.35)}
+#lifeinfo{min-height:4em}
+.price td:first-child{font:800 1.3rem "Bricolage Grotesque",sans-serif}
+@media(max-width:700px){.life button{flex:1 1 100%;clip-path:none;border-radius:12px;margin-bottom:6px;min-height:46px}.life{gap:0}.anat .p{padding:16px 10px 6px}}
+@media(prefers-reduced-motion:reduce){.life button{transition:none}}
+</style>
+</head>
+<body data-page="domaine">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">🏷️ Noms de domaine</span>
+<h1>Le nom de <span class="grad">ton site</span></h1>
+<p class="lead">Les ordinateurs se retrouvent grâce à des numéros. Le nom de domaine est le nom facile à retenir qui correspond à ce numéro, un peu comme un contact dans ton téléphone.</p>
+</div>
+
+<section class="container sec reveal">
+<h2>📇 C'est quoi, un nom de domaine ?</h2>
+<div class="card"><div class="ip"><div><div style="font-size:2.4rem">🔢</div><code>203.0.113.10</code><p class="mute" style="margin:0">L'adresse IP : précise, mais impossible à retenir</p></div><div class="arr">⇄</div><div><div style="font-size:2.4rem">🏷️</div><code>exemple.fr</code><p class="mute" style="margin:0">Le nom de domaine : lisible, facile à partager</p></div></div></div>
+<h3 style="margin-top:28px">Comment se lit un nom de domaine ?</h3>
+<div class="anat" aria-label="blog.exemple.fr décomposé">
+<span class="p" style="--k:var(--pink)"><small>Sous-domaine</small>blog</span><span class="d">.</span><span class="p" style="--k:var(--green)"><small>Nom</small>exemple</span><span class="d">.</span><span class="p" style="--k:var(--yellow)"><small>Extension</small>fr</span></div>
+<div class="grid">
+<div class="card c" style="--c:var(--yellow)"><b>L'extension</b> (ou TLD) : .fr, .com, .org… Elle indique souvent un pays ou un usage.</div>
+<div class="card c" style="--c:var(--green)"><b>Le nom</b> : c'est celui que tu choisis, et qui doit être libre.</div>
+<div class="card c" style="--c:var(--pink)"><b>Le sous-domaine</b> : facultatif, gratuit, il crée des « sections » (blog, boutique…).</div>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>🛒 Qui les vend ?</h2>
+<p class="lead" style="margin-bottom:18px">Tu n'achètes pas ton nom directement au « propriétaire » de l'extension : il y a une chaîne d'intermédiaires.</p>
+<div class="chain">
+<div class="card c" style="--c:var(--violet)"><div class="em">🌍</div><h3>ICANN</h3><p class="mute" style="margin:0">Coordonne le système des noms de domaine au niveau mondial.</p></div>
+<div class="card c" style="--c:var(--blue)"><div class="em">📒</div><h3>Le registre</h3><p class="mute" style="margin:0">Gère une extension : l'Afnic pour .fr, Verisign pour .com.</p></div>
+<div class="card c" style="--c:var(--orange)"><div class="em">🏪</div><h3>Le registrar</h3><p class="mute" style="margin:0">Le bureau d'enregistrement qui vend au public : OVHcloud, Gandi, Namecheap…</p></div>
+<div class="card c" style="--c:var(--green)"><div class="em">🙋</div><h3>Toi</h3><p class="mute" style="margin:0">Tu loues le nom, souvent pour un an, et tu peux le renouveler.</p></div>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>📝 Comment en réserver un ?</h2>
+<div class="steps">
+<div class="card"><h3>Choisir un nom</h3><p class="mute" style="margin:0">Court, facile à épeler, sans tiret ni chiffre inutile.</p></div>
+<div class="card"><h3>Comparer</h3><p class="mute" style="margin:0">Compare l'extension et le prix chez plusieurs registrars.</p></div>
+<div class="card"><h3>Vérifier et payer</h3><p class="mute" style="margin:0">Le registrar vérifie que le nom est libre. Tu donnes tes coordonnées et tu paies.</p></div>
+<div class="card"><h3>Configurer</h3><p class="mute" style="margin:0">Tu relies le nom à ton hébergement (DNS) et tu actives le renouvellement automatique.</p></div>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>📖 Le DNS : l'annuaire d'Internet</h2>
+<p class="lead" style="margin-bottom:18px">Ton navigateur ne comprend que les numéros. Le DNS lui sert d'annuaire pour traduire le nom en adresse IP. Voici les cinq étapes, dans l'ordre.</p>
+<div class="card">
+<ol class="dns" id="dns"></ol>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>⏰ Et si on oublie de renouveler ?</h2>
+<p class="lead">Un nom se loue : sans renouvellement, il traverse plusieurs étapes. Clique sur chacune.</p>
+<div class="life" id="life" role="group" aria-label="Cycle de vie d'un nom de domaine"></div>
+<div class="card" id="lifeinfo" aria-live="polite"></div>
+<p class="mute" style="font-size:.92rem;margin-top:10px">Les durées exactes dépendent de l'extension et du registrar.</p>
+</section>
+
+<section class="container sec reveal">
+<h2>💶 Combien ça coûte ?</h2>
+<div class="scroll"><table class="price">
+<thead><tr><th>Extension</th><th>Gérée par</th><th>Prix indicatif par an</th><th>Usage courant</th></tr></thead>
+<tbody>
+<tr><td>.com</td><td>Verisign</td><td>environ 10 à 15 €</td><td>Sites internationaux et commerciaux</td></tr>
+<tr><td>.fr</td><td>Afnic</td><td>environ 6 à 10 €</td><td>Sites liés à la France</td></tr>
+<tr><td>.org</td><td>PIR</td><td>environ 10 à 15 €</td><td>Associations et projets non commerciaux</td></tr>
+</tbody></table></div>
+<p class="mute" style="font-size:.92rem;margin-top:10px">Prix approximatifs : ils varient selon le registrar, et le renouvellement coûte souvent plus cher que la première année en promotion. À vérifier avant d'acheter.</p>
+<div class="brief" style="margin-top:20px"><div class="ic">💡</div><p><b>À retenir.</b> Un nom de domaine se <b>loue</b>, il ne s'achète pas pour toujours. Le <b>DNS</b> le traduit en adresse IP, et si tu oublies de le renouveler, quelqu'un d'autre peut le reprendre.</p></div>
+</section>
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+const D=[
+["⌨️","Tu tapes exemple.fr dans ton navigateur.","var(--pink)"],
+["❓","Le navigateur demande à un serveur DNS (souvent celui de ton fournisseur d'accès) : « quelle est l'adresse IP de exemple.fr ? »","var(--orange)"],
+["🔎","Le serveur DNS cherche : il interroge le registre de l'extension .fr, qui lui indique où se trouvent les informations de exemple.fr.","var(--yellow)"],
+["🔢","Il reçoit la réponse : une adresse IP, par exemple 203.0.113.10.","var(--green)"],
+["🖥️","Le navigateur se connecte au serveur à cette adresse et demande la page.","var(--blue)"]];
+$("#dns").innerHTML=D.map(d=>`<li style="--c:${d[2]}"><span class="em">${d[0]}</span><span>${d[1]}</span></li>`).join("");
+const LF=[
+["Réservation","var(--blue)","Tu loues le nom pour une durée choisie, souvent un an."],
+["Actif","var(--green)","Le site fonctionne : le DNS renvoie la bonne adresse."],
+["Expiré","var(--yellow)","Le site ne répond plus, mais tu peux encore renouveler facilement pendant un délai."],
+["Rédemption","var(--orange)","Tu peux encore le récupérer, mais avec des frais supplémentaires."],
+["Libéré","var(--red)","Le nom retourne en vente : n'importe qui peut le réserver, y compris pour imiter ton site."]];
+$("#life").innerHTML=LF.map((l,i)=>`<button type="button" data-i="${i}" style="--c:${l[1]}">${l[0]}</button>`).join("");
+function lf(i){$$("#life button").forEach((b,j)=>b.classList.toggle("on",j===i));$("#lifeinfo").innerHTML=`<b>${LF[i][0]}</b> : ${LF[i][2]}`}
+$("#life").onclick=e=>{const b=e.target.closest("button");if(b)lf(+b.dataset.i)};lf(1);
+</script>
+</body>
+</html>

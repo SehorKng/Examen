@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les standards du Web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.org .em{font-size:2.4rem}
+.org .yr{font:800 1.1rem "Bricolage Grotesque",sans-serif}
+.tg{display:inline-flex;gap:4px;padding:5px;border-radius:99px;background:var(--bg);border:2px solid var(--line);margin-bottom:18px}
+.tg button{border:0;background:transparent;color:var(--ink);border-radius:99px;padding:10px 20px;font:700 1rem Figtree,sans-serif;cursor:pointer;min-height:44px}
+.tg button.on{background:var(--accent);color:var(--on)}
+.pair{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.browser{border-radius:14px;overflow:hidden;background:#fff;color:#13203a;box-shadow:var(--shadow);border:1px solid var(--line)}
+.browser .tb{background:#e9edf8;color:#13203a;padding:8px 12px;font-size:.8rem;display:flex;gap:8px;align-items:center}
+.browser .tb::before{content:"";width:9px;height:9px;border-radius:50%;background:#ff5c5c;box-shadow:14px 0 #ffd23f,28px 0 #2ee6a6;margin-right:36px;flex:none}
+.tb .url{flex:1;background:#fff;border-radius:99px;padding:3px 12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tb .st{font-size:1rem}
+.page{padding:14px;min-height:230px;font-size:.92rem;background:#fff}
+.mk .nav{display:flex;gap:12px;align-items:center;padding-bottom:8px;border-bottom:2px solid #e3e9fb;margin-bottom:10px;font-size:.85rem}
+.mk .nav b{margin-right:auto}
+.mk h4{margin:0 0 2px;font:800 1.3rem "Bricolage Grotesque",sans-serif}
+.mk p{margin:0 0 8px;color:#5a6690;font-size:.88rem}
+.mk .row{display:flex;gap:8px}
+.mk .row span{flex:1;background:linear-gradient(160deg,#e4ecff,#f3e8ff);padding:10px 4px;border-radius:10px;text-align:center;font-size:1.5rem;line-height:1.2}
+.mk .row i{display:block;font:600 .72rem Figtree,sans-serif;color:#13203a}
+.mk .btnx{display:inline-block;background:#2457f5;color:#fff;padding:9px 18px;border-radius:99px;margin-top:12px;font-weight:700}
+.ok .tb .st::after{content:"✅"}.ko .tb .st::after{content:"❌"}
+.broken1{font-family:"Comic Sans MS",cursive}
+.broken1 .nav{flex-direction:column;align-items:flex-start;gap:2px}
+.broken1 .row{display:block}.broken1 .row span{display:inline-block;width:47%;margin:2px;font-size:1.1rem}
+.broken1 .btnx{background:#bbb;color:#777;border:2px dotted red;border-radius:0}
+.broken1 h4{font-size:.8rem}
+.broken2{font-family:serif}
+.broken2 .nav{white-space:nowrap;overflow:hidden}
+.broken2 .row span{flex:0 0 22px;overflow:hidden;white-space:nowrap;font-size:.9rem}
+.broken2 .btnx{display:none}
+.broken2 p{color:#fff}
+.cap{margin:10px 0 0;font-size:.92rem;color:var(--mute)}
+.cap b{color:var(--ink)}
+#swt{font-weight:700;margin:18px 0 0;padding:12px 16px;border-radius:12px;background:color-mix(in srgb,var(--accent) 16%,var(--card));border-left:6px solid var(--accent)}
+</style>
+</head>
+<body data-page="standards">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">📐 Standards</span>
+<h1>Les règles <span class="grad">du Web</span></h1>
+<p class="lead">Une page web s'affiche presque pareil sur ton téléphone, ton ordinateur et celui d'un ami. Ce n'est pas un hasard : tout le monde suit les mêmes règles, appelées standards.</p>
+</div>
+
+<section class="container sec reveal">
+<h2>🏛️ Qui écrit les règles ?</h2>
+<p class="lead" style="margin-bottom:18px">Personne n'est « propriétaire » du Web. Plusieurs organisations se partagent le travail.</p>
+<div class="grid">
+<div class="card c org" style="--c:var(--blue)"><div class="em">🌐</div><h3>W3C</h3><div class="yr">Depuis 1994</div><p class="mute" style="margin:0">Créé par Tim Berners-Lee. Publie des recommandations pour HTML, CSS et l'accessibilité.</p></div>
+<div class="card c org" style="--c:var(--pink)"><div class="em">🦊</div><h3>WHATWG</h3><div class="yr">Depuis 2004</div><p class="mute" style="margin:0">Créé par des équipes de navigateurs (Apple, Mozilla, Opera). Maintient le standard « vivant » de HTML. Depuis 2019, le W3C et le WHATWG travaillent ensemble sur HTML.</p></div>
+<div class="card c org" style="--c:var(--green)"><div class="em">📡</div><h3>IETF</h3><div class="yr">Protocoles d'Internet</div><p class="mute" style="margin:0">Écrit des protocoles comme HTTP, dans des documents appelés RFC.</p></div>
+<div class="card c org" style="--c:var(--orange)"><div class="em">⚙️</div><h3>Ecma International</h3><div class="yr">JavaScript</div><p class="mute" style="margin:0">Standardise ECMAScript, c'est-à-dire le langage JavaScript.</p></div>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>🔀 Avant / après : la même page</h2>
+<p class="lead" style="margin-bottom:18px">Voici le même code de page affiché dans deux navigateurs. Bascule entre les deux mondes.</p>
+<div class="card">
+<div class="tg" id="tg" role="group" aria-label="Avec ou sans standards"><button type="button" class="on" data-k="0">😱 Sans standards</button><button type="button" data-k="1">😌 Avec standards</button></div>
+<div class="pair" id="pair" aria-live="polite"></div>
+<p id="swt" aria-live="polite"></p>
+</div>
+</section>
+
+<section class="container sec reveal">
+<h2>🎯 Pourquoi c'est important ?</h2>
+<div class="grid">
+<div class="card c" style="--c:var(--cyan)"><h3>🧭 Compatibilité</h3><p class="mute" style="margin:0">Un seul code fonctionne partout. Sans règles communes, il faudrait écrire une version de chaque site par navigateur.</p></div>
+<div class="card c" style="--c:var(--green)"><h3>♿ Accessibilité</h3><p class="mute" style="margin:0">Les standards permettent aux lecteurs d'écran et aux outils d'aide de comprendre les pages.</p></div>
+<div class="card c" style="--c:var(--yellow)"><h3>⏳ Durée de vie</h3><p class="mute" style="margin:0">Une page écrite selon les standards fonctionne encore des années plus tard.</p></div>
+</div>
+<div class="brief" style="margin-top:20px"><div class="ic">💡</div><p><b>À retenir.</b> Sans standards, certains sites ne marcheraient que chez un seul éditeur de navigateur. Grâce à eux, le Web reste <b>ouvert à tous</b>.</p></div>
+</section>
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+const MK="<div class='mk'><div class='nav'><b>🛍️ Ma boutique</b><span>Accueil</span><span>Panier</span></div><h4>Bienvenue</h4><p>Nos nouveautés</p><div class='row'><span>👟<i>Baskets</i></span><span>🎒<i>Sac</i></span><span>🧢<i>Casquette</i></span></div><span class='btnx'>Acheter</span></div>";
+const P={0:[["Navigateur A","la mise en page casse, la police change, le bouton est grisé."],["Navigateur B","colonnes écrasées, texte invisible et bouton disparu."]],1:[["Navigateur A","page conforme."],["Navigateur B","exactement le même rendu."]]};
+function sw(k){$("#pair").innerHTML=P[k].map((p,i)=>`<div><div class="browser ${k?"ok":"ko"}"><div class="tb"><span class="url">ma-boutique.fr</span><span class="st"></span></div><div class="page ${k==0?"broken"+(i+1):""}">${MK}</div></div><p class="cap"><b>${p[0]}</b> : ${p[1]}</p></div>`).join("");
+$("#swt").textContent=k==0?"Le même code donne deux résultats : chaque navigateur l'interprète à sa façon.":"Grâce aux standards, un seul code fonctionne partout.";
+$$("#tg button").forEach(b=>{const on=+b.dataset.k===k;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)})}
+$("#tg").onclick=e=>{const b=e.target.closest("button");if(b)sw(+b.dataset.k)};sw(0);
+</script>
+</body>
+</html>

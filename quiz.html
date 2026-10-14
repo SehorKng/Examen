@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les quiz</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.qtabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 0 12px;margin-bottom:6px}
+.qtabs button{flex:none;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:10px 16px;font:700 .95rem Figtree,sans-serif;cursor:pointer;min-height:44px}
+.qtabs button:hover{border-color:var(--c)}
+.qtabs button.on{background:var(--c);border-color:var(--c);color:var(--on)}
+.qtabs small{opacity:.85;font-weight:700;margin-left:4px}
+.qbar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:16px}
+.qbar i{display:block;height:100%;width:0;background:var(--c);transition:width .3s}
+.qtext{font:500 1.35rem/1.3 "Bricolage Grotesque",sans-serif;margin:0 0 16px}
+.qmsg{background:var(--bg);border:2px dashed var(--line);border-radius:14px;padding:14px;margin-bottom:16px}
+.qo{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.qo button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:14px 16px;font:700 1rem Figtree,sans-serif;cursor:pointer;text-align:left;min-height:52px}
+.qo button:hover:not(:disabled){border-color:var(--c)}
+.qo button.ok{background:var(--green);color:var(--on);border-color:var(--green)}
+.qo button.ko{background:var(--red);color:var(--on);border-color:var(--red)}
+.qo button:disabled{cursor:default}
+.qfb{margin:16px 0 0;min-height:1.6em}
+.qres{text-align:center;padding:20px 0}
+.qres .big{font:800 3.4rem "Bricolage Grotesque",sans-serif;line-height:1}
+@media(max-width:700px){.qtext{font-size:1.2rem}.qtabs{margin:0 -16px;padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body data-page="quiz">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">🎯 Quiz</span>
+<h1>Teste <span class="grad">tes connaissances</span></h1>
+<p class="lead">Tous les quiz du site au même endroit. Choisis un thème, réponds, et lis l'explication après chaque question.</p>
+</div>
+<section class="container sec" style="padding-top:8px">
+<div class="qtabs" id="tabs" role="group" aria-label="Thèmes de quiz"></div>
+<div class="card c" id="qc" style="--c:var(--blue)">
+<div class="qbar"><i id="qf"></i></div>
+<p class="mute" id="qn" style="margin:0 0 6px;font-weight:700"></p>
+<div id="qb" aria-live="polite"></div>
+</div>
+</section>
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(()=>{
+const HC={200:"OK : la page est envoyée.",301:"Redirection définitive.",302:"Redirection temporaire.",404:"Page introuvable (le serveur fonctionne).",500:"Erreur côté serveur."};
+const H=[["Tu ouvres une page qui existe : elle s'affiche normalement.",200],["Tu tapes /contcat au lieu de /contact : la page n'existe pas.",404],["Le programme du site plante à cause d'un bug côté serveur.",500],["Un site a changé d'adresse pour toujours : l'ancienne renvoie vers la nouvelle.",301],["Le site te renvoie vers une page de maintenance pour quelques heures.",302],["Tu cliques sur un vieux lien d'un blog qui a supprimé l'article.",404],["Un site passe de http à https et veut que tout le monde utilise la nouvelle adresse.",301],["Le site de ta banque affiche « erreur interne du serveur ».",500]]
+.map(h=>({q:h[0],o:["200","301","302","404","500"],a:["200","301","302","404","500"].indexOf(String(h[1])),e:h[1]+" : "+HC[h[1]]}));
+const PH=[["SMS : « Colis bloqué. Réglez 1,99 € de frais sur colis-livraison-fr.top/pay sous 24 h. »",1,"Domaine inconnu en .top, urgence et petite somme : classique. Un transporteur n'impose pas de payer via un lien SMS."],
+["SMS reçu juste après avoir tapé ton mot de passe : « Votre code de vérification est 483920. Ne le communiquez à personne. »",0,"Tu viens de lancer la connexion : c'est la double authentification. Ne partage jamais ce code."],
+["E-mail : « Votre compte sera supprimé dans 24 h. Connectez-vous sur paypa1-secure.com. »",1,"Menace, urgence et faux domaine (un 1 à la place du l)."],
+["E-mail d'une newsletter à laquelle tu es inscrit, avec un lien de désinscription en bas.",0,"Message attendu, sans demande de données ni urgence. En cas de doute, va sur le site en tapant l'adresse toi-même."],
+["E-mail de ton « chef » : « Achète 5 cartes cadeaux maintenant et envoie-moi les codes, c'est urgent et confidentiel. »",1,"Urgence, secret et demande inhabituelle : arnaque courante, même si le nom du chef est le bon."]]
+.map(p=>({m:p[0],q:"Ce message est-il du phishing ?",o:["✅ Message légitime","🎣 Phishing"],a:p[1],e:p[2]}));
+const Z=[
+{id:"http",n:"Codes HTTP",em:"🚦",c:"var(--orange)",Q:H},
+{id:"phishing",n:"Phishing",em:"🎣",c:"var(--pink)",Q:PH},
+{id:"domaines",n:"Domaines",em:"🏷️",c:"var(--green)",Q:[
+{q:"Dans blog.exemple.fr, quelle partie est l'extension ?",o:["blog","exemple","fr","exemple.fr"],a:2,e:"L'extension (TLD) est la dernière partie : .fr."},
+{q:"Qui vend les noms de domaine au public ?",o:["L'ICANN","Le registre","Un registrar","Le DNS"],a:2,e:"Le registrar (OVHcloud, Gandi…) est le bureau d'enregistrement qui vend au public."},
+{q:"À quoi sert le DNS ?",o:["À chiffrer les échanges","À traduire un nom en adresse IP","À héberger les pages","À bloquer les virus"],a:1,e:"Le DNS est l'annuaire d'Internet : nom de domaine → adresse IP."},
+{q:"Tu oublies de renouveler ton nom de domaine pendant très longtemps. Que peut-il arriver ?",o:["Rien du tout","Il devient gratuit pour toi","Il est libéré et quelqu'un d'autre peut le réserver","Il change d'extension"],a:2,e:"Un nom se loue : après expiration et rédemption, il retourne en vente."}]},
+{id:"standards",n:"Standards",em:"📐",c:"var(--cyan)",Q:[
+{q:"Qui a créé le W3C ?",o:["Tim Berners-Lee","Steve Jobs","Bill Gates","Larry Page"],a:0,e:"Tim Berners-Lee, l'inventeur du Web, a fondé le W3C en 1994."},
+{q:"Quelle organisation écrit des protocoles comme HTTP dans des RFC ?",o:["Ecma International","IETF","WHATWG","ICANN"],a:1,e:"L'IETF publie les protocoles d'Internet sous forme de RFC."},
+{q:"Quelle organisation standardise JavaScript (ECMAScript) ?",o:["W3C","IETF","Ecma International","Afnic"],a:2,e:"Ecma International standardise ECMAScript."},
+{q:"Quel est l'avantage principal des standards ?",o:["Les sites sont plus chers","Un même code fonctionne sur tous les navigateurs","Les sites s'affichent plus lentement","Chaque navigateur a sa version"],a:1,e:"Sans standards, il faudrait une version de chaque site par navigateur."}]},
+{id:"timeline",n:"Timeline",em:"⏳",c:"var(--violet)",Q:[
+{q:"En quelle année l'idée du Web naît-elle au CERN ?",o:["1969","1989","1999","2009"],a:1,e:"Tim Berners-Lee propose son système de pages reliées en 1989."},
+{q:"Quel navigateur de 1993 affiche texte et images ensemble ?",o:["Chrome","Firefox","Mosaic","Safari"],a:2,e:"Mosaic a rendu le Web grand public."},
+{q:"Quel service de 1998 classe les pages par pertinence ?",o:["Google","Amazon","YouTube","Wikipédia"],a:0,e:"Google : on trouve enfin ce qu'on cherche."},
+{q:"Quel appareil lancé en 2007 a popularisé le Web mobile ?",o:["Le PC portable","La Game Boy","L'iPhone","La webcam"],a:2,e:"L'iPhone : le Web dans la poche."},
+{q:"Quel standard de 2014 permet l'audio et la vidéo sans plugin ?",o:["HTML5","CSS1","FTP","Flash"],a:0,e:"HTML5 intègre audio, vidéo et dessin dans le navigateur."}]}];
+const LINK={http:"url",phishing:"securite",domaines:"domaine",standards:"standards",timeline:"timeline"};
+/* État de chaque quiz : i = question en cours, s = score, a = réponse choisie (null tant qu'on n'a pas répondu) */
+const S={};Z.forEach(z=>S[z.id]={i:0,s:0,a:null});
+let cur=Z[0];
+
+function tabs(){$("#tabs").innerHTML=Z.map(z=>{const s=S[z.id],fin=s.i>=z.Q.length;
+return `<button type="button" aria-pressed="${z===cur}" data-id="${z.id}" class="${z===cur?"on":""}" style="--c:${z.c}">${z.em} ${z.n}${fin?`<small>${s.s}/${z.Q.length}</small>`:""}</button>`}).join("")}
+
+function draw(){const z=cur,s=S[z.id],n=z.Q.length;tabs();
+$("#qc").style.setProperty("--c",z.c);
+$("#qf").style.width=((s.i+(s.a!==null?1:0))/n*100)+"%";
+if(s.i>=n){const r=s.s/n;$("#qn").textContent="Quiz terminé";
+$("#qb").innerHTML=`<div class="qres"><div class="big">${s.s} / ${n}</div><p class="lead" style="margin:10px auto 16px">${r===1?"Parfait, bravo ! 🏆":r>=.6?"Bien joué, encore un peu d'entraînement ! 💪":"Relis la page du thème et retente ta chance ! 📖"}</p><button class="btn" id="rp" type="button">↻ Rejouer</button> <a class="btn ghost" href="${LINK[z.id]}.html">Revoir la page</a></div>`;return}
+const q=z.Q[s.i],done=s.a!==null;
+$("#qn").textContent=`Question ${s.i+1} / ${n} · Score : ${s.s}`;
+$("#qb").innerHTML=(q.m?`<div class="qmsg">${esc(q.m)}</div>`:"")+`<p class="qtext">${esc(q.q)}</p><div class="qo">${q.o.map((o,i)=>`<button type="button" data-i="${i}"${done?" disabled":""}${done&&i===q.a?' class="ok"':done&&i===s.a?' class="ko"':""}>${esc(o)}</button>`).join("")}</div>`
++(done?`<p class="qfb">${s.a===q.a?'<span class="good">Correct. </span>':'<span class="wrong">Raté. </span>'}${esc(q.e)}</p><button class="btn" id="nx" type="button">${s.i+1>=n?"Voir mon score →":"Suivant →"}</button>`:"")}
+
+/* Un seul gestionnaire de clics pour tout le quiz */
+$("#qb").addEventListener("click",e=>{const z=cur,s=S[z.id];
+const opt=e.target.closest(".qo button");
+if(opt){if(s.a!==null||s.i>=z.Q.length)return;s.a=+opt.dataset.i;if(s.a===z.Q[s.i].a)s.s++;draw();const nx=$("#nx");if(nx)nx.focus({preventScroll:true});return}
+if(e.target.closest("#nx")){if(s.a===null)return;s.i++;s.a=null;draw();$("#qc").scrollIntoView({block:"nearest",behavior:"smooth"});return}
+if(e.target.closest("#rp")){S[z.id]={i:0,s:0,a:null};draw()}});
+
+function choose(id){const z=Z.find(x=>x.id===id);if(z){cur=z;draw();return true}return false}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;choose(b.dataset.id);try{history.replaceState(null,"","#"+b.dataset.id)}catch(x){}});
+addEventListener("hashchange",()=>choose(location.hash.slice(1)));
+if(!choose(location.hash.slice(1)))draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La sécurité sur le Web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.atk{display:flex;flex-direction:column;gap:10px;border-top:8px solid var(--c)}
+.atk .em{font-size:2.6rem;line-height:1}
+.atk h3{margin:0}
+.atk p{margin:0}
+.def{margin-top:auto;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--c) 20%,var(--card));border-left:5px solid var(--c)}
+.def b{display:block;margin-bottom:2px}
+</style>
+</head>
+<body data-page="securite">
+<header id="site-header"></header>
+<main>
+<div class="container hero">
+<span class="eyebrow">🛡️ Sécurité</span>
+<h1>Surfer <span class="grad">sans se faire piéger</span></h1>
+<p class="lead">Sur le Web, certaines personnes cherchent à voler des mots de passe ou à infecter des appareils. Bonne nouvelle : quelques réflexes simples suffisent à éviter les attaques les plus courantes.</p>
+</div>
+
+<section class="container sec reveal">
+<h2>⚔️ Les attaques courantes</h2>
+<p class="lead" style="margin-bottom:18px">Pour chaque attaque : comment elle fonctionne, et comment te défendre.</p>
+<div class="grid" id="cards"></div>
+</section>
+
+<section class="container sec reveal">
+<h2>✅ Les bons réflexes</h2>
+<div class="grid">
+<div class="card c" style="--c:var(--green)"><h3>🙋 Pour l'utilisateur</h3><ul class="tips"><li>Un mot de passe long et différent par site, dans un gestionnaire de mots de passe.</li><li>La double authentification partout où c'est possible.</li><li>Ne jamais cliquer sur un lien suspect : taper soi-même l'adresse du site.</li><li>Faire les mises à jour du système et des applications.</li></ul></div>
+<div class="card c" style="--c:var(--blue)"><h3>💻 Pour le développeur</h3><ul class="tips"><li>HTTPS partout.</li><li>Stocker les mots de passe hachés et salés, jamais en clair.</li><li>Valider et nettoyer toutes les données reçues des utilisateurs.</li><li>Limiter les tentatives de connexion et tenir les dépendances à jour.</li></ul></div>
+</div>
+</section>
+</main>
+<div id="pager"></div>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+const A=[
+["🎣","Phishing","var(--pink)","Un faux message (e-mail, SMS) imite une banque, un livreur ou un service connu pour te faire saisir tes identifiants sur un faux site.","Vérifie l'adresse de l'expéditeur et du lien, ne te connecte jamais via un lien reçu, signale le message."],
+["🦠","Logiciels malveillants","var(--orange)","Un programme (virus, rançongiciel, espion) s'installe via une pièce jointe, un téléchargement piégé ou une faille, puis vole, chiffre ou détruit des données.","Télécharge depuis les sources officielles, garde un antivirus et le système à jour, fais des sauvegardes."],
+["🔨","Force brute","var(--violet)","Un programme teste automatiquement des milliers de mots de passe jusqu'à trouver le bon.","Mots de passe longs et uniques, double authentification, blocage après plusieurs échecs côté site."]];
+$("#cards").innerHTML=A.map(a=>`<article class="card atk" style="--c:${a[2]}"><div class="em">${a[0]}</div><h3>${a[1]}</h3><p>${a[3]}</p><div class="def"><b>🛡️ Se protéger</b>${a[4]}</div></article>`).join("");
+
+</script>
+</body>
+</html>
