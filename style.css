@@ -4,9 +4,9 @@
 :root[data-theme="light"]{--bg:#f5f7ff;--ink:#141a3d;--mute:#4a5580;--card:#fff;--line:#d3dbfa;--link:#2f55d4;--shadow:0 10px 30px rgba(40,60,140,.15)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:calc(84px + env(safe-area-inset-top,0px))}
 body{margin:0;min-height:100vh;color:var(--ink);font:17px/1.65 Figtree,system-ui,sans-serif;
-background:radial-gradient(800px 420px at 8% -5%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),radial-gradient(700px 400px at 100% 8%,color-mix(in srgb,var(--pink) 18%,transparent),transparent 70%),var(--bg);background-repeat:no-repeat}
+background:var(--bg);background:radial-gradient(800px 420px at 8% -5%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),radial-gradient(700px 400px at 100% 8%,color-mix(in srgb,var(--pink) 18%,transparent),transparent 70%),var(--bg);background-repeat:no-repeat}
 h1,h2,h3{font-family:"Bricolage Grotesque",Georgia,sans-serif;line-height:1.15;margin:0 0 .5em;text-wrap:balance}
 h1{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:800}
 h2{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800}
@@ -19,9 +19,9 @@ p{margin:0 0 1em}
 .container{max-width:1100px;margin:0 auto;padding:0 20px}
 .skip{position:absolute;left:12px;top:-80px;z-index:100;background:var(--yellow);color:var(--on);padding:10px 16px;border-radius:12px;font-weight:700;text-decoration:none}
 .skip:focus{top:calc(8px + env(safe-area-inset-top,0px))}
-.site-header{position:sticky;top:0;z-index:30;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 90%,transparent);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.site-header{position:sticky;top:0;z-index:30;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:var(--bg);background:color-mix(in srgb,var(--bg) 90%,transparent);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .hbar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px}
-.brand{font:800 1.1rem "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink);white-space:nowrap;margin-right:auto}
+.brand{font:800 1.1rem "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink);white-space:nowrap;margin-right:auto;display:inline-flex;align-items:center;min-height:44px}
 .brand span{display:none}
 @media(max-width:1099px) and (min-width:360px){.brand span{display:inline}}
 .hbar nav{display:none}

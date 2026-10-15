@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Les noms de domaine</title>
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,6 +43,7 @@
 </style>
 </head>
 <body data-page="domaine">
+<noscript><p class="container" style="padding:24px 20px"><b>⚠️ Ce site a besoin de JavaScript</b> pour afficher le menu et les contenus interactifs. Active-le dans ton navigateur.</p></noscript>
 <header id="site-header"></header>
 <main>
 <div class="container hero">
@@ -131,7 +133,7 @@ const LF=[
 ["Rédemption","var(--orange)","Tu peux encore le récupérer, mais avec des frais supplémentaires."],
 ["Libéré","var(--red)","Le nom retourne en vente : n'importe qui peut le réserver, y compris pour imiter ton site."]];
 $("#life").innerHTML=LF.map((l,i)=>`<button type="button" data-i="${i}" style="--c:${l[1]}">${l[0]}</button>`).join("");
-function lf(i){$$("#life button").forEach((b,j)=>b.classList.toggle("on",j===i));$("#lifeinfo").innerHTML=`<b>${LF[i][0]}</b> : ${LF[i][2]}`}
+function lf(i){$$("#life button").forEach((b,j)=>{b.classList.toggle("on",j===i);b.setAttribute("aria-pressed",j===i)});$("#lifeinfo").innerHTML=`<b>${LF[i][0]}</b> : ${LF[i][2]}`}
 $("#life").onclick=e=>{const b=e.target.closest("button");if(b)lf(+b.dataset.i)};lf(1);
 </script>
 </body>

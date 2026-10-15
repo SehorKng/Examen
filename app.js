@@ -35,7 +35,8 @@ const setMenu=o=>{H.classList.toggle("open",o);bg.setAttribute("aria-expanded",S
 bg.onclick=()=>setMenu(!H.classList.contains("open"));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&H.classList.contains("open")){setMenu(false);bg.focus()}});
 document.addEventListener("click",e=>{if(!H.contains(e.target))setMenu(false)});
-matchMedia("(min-width:1100px)").addEventListener("change",()=>setMenu(false))}
+const mq=matchMedia("(min-width:1100px)"),close=()=>setMenu(false);
+if(mq.addEventListener)mq.addEventListener("change",close);else if(mq.addListener)mq.addListener(close)}
 
 /* Thème clair / sombre (mémorisé) */
 const R=document.documentElement,tb=$("#theme");

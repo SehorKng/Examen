@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Les URL</title>
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +13,13 @@
 <style>
 :root{--k1:var(--blue);--k2:var(--green);--k3:var(--yellow);--k4:var(--pink);--k5:var(--violet)}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.tabs button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:6px 14px;font:600 .92rem Figtree,sans-serif;cursor:pointer}
+.tabs button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:9px 16px;min-height:40px;font:600 .92rem Figtree,sans-serif;cursor:pointer}
 .tabs button.on{background:var(--orange);border-color:var(--orange);color:var(--on)}
 .tiles{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:clamp(.9rem,2.6vw,1.45rem);overflow-wrap:anywhere}
 .sep{padding-bottom:10px;color:var(--mute)}
 .tile{position:relative;border:0;border-radius:14px 14px 4px 4px;padding:22px 14px 10px;color:var(--on);background:var(--k);cursor:pointer;font:inherit;transition:transform .2s;text-align:left;overflow-wrap:anywhere}
 .tile small{position:absolute;top:5px;left:12px;font:700 .62rem Figtree,sans-serif;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
-.tile:hover{transform:translateY(-5px)}
+@media(hover:hover){.tile:hover{transform:translateY(-5px)}}
 .tile.on{outline:4px solid var(--ink);outline-offset:3px;transform:translateY(-5px)}
 .tile.none{background:transparent;border:2px dashed var(--line);color:var(--mute);cursor:pointer}
 .panel{margin-top:20px;display:grid;gap:16px;grid-template-columns:auto 1fr;align-items:start;padding:18px;border-radius:var(--r);background:color-mix(in srgb,var(--k) 18%,var(--card));border:2px solid var(--k)}
@@ -44,6 +45,7 @@
 </style>
 </head>
 <body data-page="url">
+<noscript><p class="container" style="padding:24px 20px"><b>⚠️ Ce site a besoin de JavaScript</b> pour afficher le menu et les contenus interactifs. Active-le dans ton navigateur.</p></noscript>
 <header id="site-header"></header>
 <main>
 <div class="container hero">
@@ -90,7 +92,7 @@
 <h2>↪️ 301 ou 302 : deux façons de déménager</h2>
 <p class="lead">Une redirection renvoie le visiteur d'une adresse à une autre. La différence : est-ce pour toujours, ou juste pour un moment ?</p>
 <div class="card">
-<div class="tabs" id="rd" role="group" aria-label="Type de redirection"><button class="on" data-r="301">301 · définitive</button><button data-r="302">302 · temporaire</button></div>
+<div class="tabs" id="rd" role="group" aria-label="Type de redirection"><button type="button" class="on" data-r="301">301 · définitive</button><button type="button" data-r="302">302 · temporaire</button></div>
 <div class="redir" id="redir" aria-live="polite"></div>
 <p id="rnote" style="text-align:center;margin:0"></p>
 </div>
@@ -115,9 +117,9 @@ const PARTS=[
 let sel=0,U=null;
 $("#ex").innerHTML=EX.map((e,i)=>`<button type="button" data-i="${i}" class="${i?"":"on"}">${e[0]}</button>`).join("");
 function vals(u){return [u.protocol.slice(0,-1),u.host,u.pathname==="/"&&!u.href.replace(u.origin,"").startsWith("/")?"":u.pathname,u.search,u.hash]}
-function tilesHTML(v,id){const out=[];
+function tilesHTML(v,id){const out=[],ap=i=>id==="tiles"?` aria-pressed="${i===sel}"`:"";
 v.forEach((s,i)=>{if(i===1)out.push('<span class="sep">://</span>');
-out.push(s?`<button type="button" class="tile${id==="tiles"&&i===sel?" on":""}" style="--k:${PARTS[i].k}" data-i="${i}" aria-label="${PARTS[i].lab} : ${esc(s)}"><small>${PARTS[i].lab}</small>${esc(s)}</button>`:`<button type="button" class="tile none${id==="tiles"&&i===sel?" on":""}" data-i="${i}" aria-label="${PARTS[i].lab} : absent"><small>${PARTS[i].lab}</small>∅ aucun</button>`)});
+out.push(s?`<button type="button" class="tile${id==="tiles"&&i===sel?" on":""}" style="--k:${PARTS[i].k}" data-i="${i}"${ap(i)} aria-label="${PARTS[i].lab} : ${esc(s)}"><small>${PARTS[i].lab}</small>${esc(s)}</button>`:`<button type="button" class="tile none${id==="tiles"&&i===sel?" on":""}" data-i="${i}"${ap(i)} aria-label="${PARTS[i].lab} : absent"><small>${PARTS[i].lab}</small>∅ aucun</button>`)});
 return out.join("")}
 function extra(i,v){
 if(i===1&&v[1]){const h=v[1].split(":")[0].split("."),port=v[1].split(":")[1];let t="";
@@ -131,7 +133,7 @@ $("#tiles").innerHTML=tilesHTML(v,"tiles");
 const none=!v[sel];
 $("#panel").style.setProperty("--k",p.k);
 $("#panel").innerHTML=`<div class="em">${p.em}</div><div><span class="analogy">${p.an}</span><h3>${p.name}</h3><p style="margin:0">${none?"Cette adresse n'en contient pas, car cette partie est facultative. Essaie l'exemple complet !":p.txt+extra(sel,v)}</p></div>`}
-function pick(i){U=new URL(EX[i][1]);sel=0;$$("#ex button").forEach((b,j)=>b.classList.toggle("on",j===i));render()}
+function pick(i){U=new URL(EX[i][1]);sel=0;$$("#ex button").forEach((b,j)=>{b.classList.toggle("on",j===i);b.setAttribute("aria-pressed",j===i)});render()}
 $("#ex").onclick=e=>{const b=e.target.closest("button");if(b)pick(+b.dataset.i)};
 $("#tiles").onclick=e=>{const b=e.target.closest(".tile");if(b){sel=+b.dataset.i;render()}};
 pick(0);
@@ -160,7 +162,7 @@ $("#codeCards").innerHTML=CODES.map(c=>`<div class="card code" style="--c:${c[2]
 
 /* ---------- Redirections ---------- */
 const RD={"301":["var(--blue)","301 Moved Permanently","Définitif : le navigateur et Google retiennent la nouvelle adresse et ne repassent plus par l'ancienne."],"302":["var(--cyan)","302 Found","Temporaire : l'ancienne adresse reste la bonne. La prochaine fois, le navigateur repassera d'abord par elle."]};
-function rd(k){const r=RD[k];$("#redir").innerHTML=`<div class="node">🧑 Toi<br><small>demandes ancien-site.fr</small></div><span class="ar">➜</span><div class="node mid" style="--c:${r[0]}">${r[1]}<br><small>« va voir nouveau-site.fr »</small></div><span class="ar">➜</span><div class="node">🌐 nouveau-site.fr<br><small>200 OK ✅</small></div>`;$("#rnote").textContent=r[2];$$("#rd button").forEach(b=>b.classList.toggle("on",b.dataset.r===k))}
+function rd(k){const r=RD[k];$("#redir").innerHTML=`<div class="node">🧑 Toi<br><small>demandes ancien-site.fr</small></div><span class="ar">➜</span><div class="node mid" style="--c:${r[0]}">${r[1]}<br><small>« va voir nouveau-site.fr »</small></div><span class="ar">➜</span><div class="node">🌐 nouveau-site.fr<br><small>200 OK ✅</small></div>`;$("#rnote").textContent=r[2];$$("#rd button").forEach(b=>{const on=b.dataset.r===k;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)})}
 $("#rd").onclick=e=>{const b=e.target.closest("button");if(b)rd(b.dataset.r)};rd("301");
 
 </script>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Timeline du Web</title>
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +16,7 @@
 .track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 0 20px;position:relative;scrollbar-width:none;outline-offset:4px}
 .track::-webkit-scrollbar{display:none}
 .step{flex:0 0 300px;height:460px;display:flex;flex-direction:column;scroll-snap-align:start;padding:0;overflow:hidden;border-top:6px solid var(--c);transition:transform .25s}
-.step:hover{transform:translateY(-6px)}
+@media(hover:hover){.step:hover{transform:translateY(-6px)}}
 .pic{position:relative;flex:none;width:100%;aspect-ratio:16/10;display:grid;place-items:center;font-size:4rem;background:linear-gradient(135deg,var(--c1),var(--c2));overflow:hidden}
 .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .sbody{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
@@ -26,18 +27,19 @@
 .arrow:hover{transform:scale(1.12)}
 .arrow:disabled{opacity:.25;cursor:default;transform:none}
 .arrow.prev{left:-14px}.arrow.next{right:-14px}
-@media(max-width:700px){.track{margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px}.step{flex-basis:min(300px,80vw);height:auto;min-height:430px}.jump button{padding:8px 12px}.arrow{display:none}}
+@media(max-width:700px){.track{margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px}.step{flex-basis:min(300px,80vw);height:auto;min-height:430px}.jump button{padding:8px 12px;min-height:42px}.arrow{display:none}}
 .meter{display:flex;align-items:center;gap:14px;margin:6px 0 16px}
 .bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--pink));transition:width .3s}
 .jump{display:flex;flex-wrap:wrap;gap:8px}
-.jump button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:4px 12px;font:600 .9rem Figtree,sans-serif;cursor:pointer}
+.jump button{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:6px 12px;min-height:38px;font:600 .9rem Figtree,sans-serif;cursor:pointer}
 .jump button:hover{border-color:var(--c)}
 .jump button.on{background:var(--c);border-color:var(--c);color:var(--on)}
 @media(prefers-reduced-motion:reduce){.step,.arrow,.bar i{transition:none}}
 </style>
 </head>
 <body data-page="timeline">
+<noscript><p class="container" style="padding:24px 20px"><b>⚠️ Ce site a besoin de JavaScript</b> pour afficher le menu et les contenus interactifs. Active-le dans ton navigateur.</p></noscript>
 <header id="site-header"></header>
 <main>
 <div class="container hero">
@@ -96,16 +98,22 @@ $("#jump").innerHTML=TL.map((t,i)=>`<button type="button" data-i="${i}" style="-
 
 const tr=$("#track"),cards=$$(".step",tr),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const stepW=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:300;
+const maxL=()=>tr.scrollWidth-tr.clientWidth;
 const go=l=>tr.scrollTo({left:l,behavior:reduce?"auto":"smooth"});
-$("#prev").onclick=()=>go(tr.scrollLeft-stepW());
-$("#next").onclick=()=>go(tr.scrollLeft+stepW());
-$("#jump").onclick=e=>{const b=e.target.closest("button");if(b)go(cards[b.dataset.i].offsetLeft)};
-function upd(){const i=Math.min(cards.length-1,Math.round(tr.scrollLeft/stepW()));
+/* pin : la date choisie par un clic sur une date. La frise ne peut pas défiler plus loin que sa fin,
+   donc sans ça les dernières dates ne pourraient jamais être « actives ». */
+let pin=null;
+$("#prev").onclick=()=>{pin=null;go(tr.scrollLeft-stepW())};
+$("#next").onclick=()=>{pin=null;go(tr.scrollLeft+stepW())};
+$("#jump").onclick=e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.i,left=Math.min(cards[i].offsetLeft,maxL());pin={i,left};upd();go(left)};
+function upd(){const end=tr.scrollLeft>=maxL()-4;
+let i=end?cards.length-1:Math.min(cards.length-1,Math.round(tr.scrollLeft/stepW()));
+if(pin&&Math.abs(tr.scrollLeft-pin.left)<4)i=pin.i;
 $("#count").textContent=`${i+1} / ${cards.length}`;$("#fill").style.width=((i+1)/cards.length*100)+"%";
-$("#prev").disabled=tr.scrollLeft<4;$("#next").disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4;
-$$("#jump button").forEach((b,j)=>b.classList.toggle("on",j===i))}
+$("#prev").disabled=tr.scrollLeft<4;$("#next").disabled=end;
+$$("#jump button").forEach((b,j)=>{b.classList.toggle("on",j===i);if(j===i)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")})}
 tr.addEventListener("scroll",()=>requestAnimationFrame(upd),{passive:true});
-addEventListener("resize",upd);upd();
+addEventListener("resize",()=>{pin=null;upd()});upd();
 </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le Web, simplement</title>
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,20 +14,21 @@
 .hero{text-align:center;padding:80px 0 40px}
 .hero .lead{margin:0 auto 24px}
 .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.float{position:absolute;font-size:2.4rem;animation:bob 4s ease-in-out infinite}
+.float{position:absolute;font-size:2.4rem;animation:bob 4s ease-in-out infinite;pointer-events:none}
 .herowrap{position:relative}
 @keyframes bob{50%{transform:translateY(-14px) rotate(8deg)}}
-@media(max-width:700px){.float{display:none}}
+@media(max-width:1000px){.float{display:none}}
+@media(max-width:700px){.hero{padding:36px 0 20px}}
 @media(prefers-reduced-motion:reduce){.float{animation:none}}
 .flow{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .fstep{position:relative;text-align:center}
 .fstep .big{font-size:2.8rem}
-.fstep a{font-weight:700;font-size:.92rem}
+.fstep a{display:inline-block;padding:10px 6px;font-weight:700;font-size:.92rem}
 .fstep::after{content:"➜";position:absolute;right:-14px;top:42%;color:var(--mute);font-size:1.3rem}
 .fstep:last-child::after{display:none}
 @media(max-width:700px){.fstep::after{display:none}}
 .topic{display:block;text-decoration:none;color:var(--ink);transition:transform .2s,box-shadow .2s;position:relative}
-.topic:hover{transform:translateY(-6px) rotate(-.6deg)}
+@media(hover:hover){.topic:hover{transform:translateY(-6px) rotate(-.6deg)}}
 .topic .num{position:absolute;top:14px;right:16px;font:800 2rem "Bricolage Grotesque",sans-serif;color:color-mix(in srgb,var(--c) 70%,transparent)}
 .topic .em{display:grid;place-items:center;width:64px;height:64px;border-radius:18px;font-size:2rem;background:color-mix(in srgb,var(--c) 35%,transparent);margin-bottom:12px}
 .topic p{color:var(--mute);margin:0 0 10px}
@@ -34,10 +36,11 @@
 </style>
 </head>
 <body data-page="index">
+<noscript><p class="container" style="padding:24px 20px"><b>⚠️ Ce site a besoin de JavaScript</b> pour afficher le menu et les contenus interactifs. Active-le dans ton navigateur.</p></noscript>
 <header id="site-header"></header>
 <main>
 <div class="container herowrap">
-<span class="float" style="left:4%;top:60px">🌐</span><span class="float" style="right:6%;top:90px;animation-delay:1s">🔗</span><span class="float" style="left:12%;top:300px;animation-delay:2s">🛡️</span><span class="float" style="right:10%;top:310px;animation-delay:.5s">⏳</span>
+<span class="float" aria-hidden="true" style="left:4%;top:60px">🌐</span><span class="float" aria-hidden="true" style="right:6%;top:90px;animation-delay:1s">🔗</span><span class="float" aria-hidden="true" style="left:12%;top:300px;animation-delay:2s">🛡️</span><span class="float" aria-hidden="true" style="right:10%;top:310px;animation-delay:.5s">⏳</span>
 <div class="hero">
 <span class="eyebrow">🚀 Pour débutants en développement web</span>
 <h1>Le Web, <span class="grad">simplement</span></h1>
