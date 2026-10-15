@@ -16,6 +16,7 @@ a:hover{text-decoration-thickness:2px}
 ::selection{background:color-mix(in srgb,var(--accent) 45%,transparent)}
 p{margin:0 0 1em}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+main:focus,main:focus-visible{outline:none}
 .container{max-width:1100px;margin:0 auto;padding:0 20px}
 .skip{position:absolute;left:12px;top:-80px;z-index:100;background:var(--yellow);color:var(--on);padding:10px 16px;border-radius:12px;font-weight:700;text-decoration:none}
 .skip:focus{top:calc(8px + env(safe-area-inset-top,0px))}
@@ -73,7 +74,7 @@ ul.tips{padding-left:1.2em;margin:.4em 0}
 ul.tips li{margin-bottom:.4em}
 .good{color:var(--green);font-weight:700}.wrong{color:var(--red);font-weight:700}
 :root[data-theme="light"] .good{color:#0b7a56}:root[data-theme="light"] .wrong{color:#c02b2b}
-.pager{display:grid;gap:16px;grid-template-columns:1fr 1fr;padding:40px 0}
+.pager{display:grid;gap:16px;grid-template-columns:1fr 1fr;padding:40px 20px}
 .pager a{display:block;padding:18px 20px;border-radius:var(--r);text-decoration:none;color:var(--ink);background:var(--card);border:2px solid var(--c);font-weight:700}
 .pager a small{display:block;color:var(--mute);font-weight:400}
 .pager a:hover{background:color-mix(in srgb,var(--c) 22%,var(--card))}
@@ -98,7 +99,7 @@ body{font-size:16px;line-height:1.6}
 .lead{font-size:1.05rem}
 .card{padding:16px}
 .grid{grid-template-columns:1fr}
-.pager{grid-template-columns:1fr;padding:28px 0;gap:12px}
+.pager{grid-template-columns:1fr;padding:28px 16px;gap:12px}
 .pager a:last-child{text-align:left}
 .brief{padding:14px;gap:10px}
 th,td{padding:8px 10px;font-size:.92rem}

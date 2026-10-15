@@ -20,19 +20,13 @@
 @media(max-width:1000px){.float{display:none}}
 @media(max-width:700px){.hero{padding:36px 0 20px}}
 @media(prefers-reduced-motion:reduce){.float{animation:none}}
-.flow{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.fstep{position:relative;text-align:center}
-.fstep .big{font-size:2.8rem}
-.fstep a{display:inline-block;padding:10px 6px;font-weight:700;font-size:.92rem}
-.fstep::after{content:"➜";position:absolute;right:-14px;top:42%;color:var(--mute);font-size:1.3rem}
-.fstep:last-child::after{display:none}
-@media(max-width:700px){.fstep::after{display:none}}
 .topic{display:block;text-decoration:none;color:var(--ink);transition:transform .2s,box-shadow .2s;position:relative}
 @media(hover:hover){.topic:hover{transform:translateY(-6px) rotate(-.6deg)}}
 .topic .num{position:absolute;top:14px;right:16px;font:800 2rem "Bricolage Grotesque",sans-serif;color:color-mix(in srgb,var(--c) 70%,transparent)}
 .topic .em{display:grid;place-items:center;width:64px;height:64px;border-radius:18px;font-size:2rem;background:color-mix(in srgb,var(--c) 35%,transparent);margin-bottom:12px}
 .topic p{color:var(--mute);margin:0 0 10px}
 .topic b{color:var(--ink)}
+.js .topic.reveal{transition:opacity .6s,transform .2s,box-shadow .2s}
 </style>
 </head>
 <body data-page="index">
@@ -42,18 +36,11 @@
 <div class="container herowrap">
 <span class="float" aria-hidden="true" style="left:4%;top:60px">🌐</span><span class="float" aria-hidden="true" style="right:6%;top:90px;animation-delay:1s">🔗</span><span class="float" aria-hidden="true" style="left:12%;top:300px;animation-delay:2s">🛡️</span><span class="float" aria-hidden="true" style="right:10%;top:310px;animation-delay:.5s">⏳</span>
 <div class="hero">
-<span class="eyebrow">🚀 Pour débutants en développement web</span>
 <h1>Le Web, <span class="grad">simplement</span></h1>
 <p class="lead">Que se passe-t-il quand tu tapes une adresse dans ton navigateur ? Sept pages courtes, des schémas et des quiz pour comprendre les bases, une notion à la fois.</p>
 <div class="cta"><a class="btn" href="timeline.html">Commencer par la timeline ⏳</a><a class="btn ghost" href="#notions">Voir toutes les notions</a></div>
 </div>
 </div>
-
-<section class="sec"><div class="container reveal">
-<h2>🎬 Le voyage d'une page web</h2>
-<p class="lead" style="margin-bottom:20px">En quelques millisecondes, quatre choses se passent. Clique sur les liens pour en savoir plus.</p>
-<div class="flow" id="flow"></div>
-</div></section>
 
 <section class="sec" id="notions"><div class="container">
 <h2 class="reveal">🧭 Les notions à découvrir</h2>
@@ -69,12 +56,6 @@
 <div id="site-footer"></div>
 <script src="app.js"></script>
 <script>
-const FS=[
-["⌨️","Tu tapes une adresse","Ton navigateur reçoit par exemple https://exemple.fr/blog.","var(--pink)","url.html","Lire une URL"],
-["📖","Le DNS cherche","Il traduit exemple.fr en adresse IP, comme un annuaire de contacts.","var(--green)","domaine.html","Le DNS"],
-["🖥️","Le serveur répond","Il renvoie les fichiers de la page avec un code de réponse : 200 si tout va bien.","var(--orange)","url.html","Les codes HTTP"],
-["🎨","La page s'affiche","Le navigateur assemble HTML, CSS et JavaScript, selon les standards du Web.","var(--violet)","standards.html","Les standards"]];
-$("#flow").innerHTML=FS.map((s,i)=>`<div class="card c fstep" style="--c:${s[3]}"><div class="big">${s[0]}</div><h3>${i+1}. ${s[1]}</h3><a href="${s[4]}">${s[5]} →</a></div>`).join("");
 $("#topics").innerHTML=PAGES.map((p,i)=>`<a class="card c topic reveal" href="${p.href}" style="--c:${p.color}"><span class="num">${i+1}</span><div class="em">${p.emoji}</div><h3>${p.label}</h3><p>${p.desc}</p><b>Découvrir →</b></a>`).join("");
 $$("#topics .reveal").forEach(e=>e.classList.add("in"));
 </script>
